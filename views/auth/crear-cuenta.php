@@ -1,0 +1,61 @@
+<h1 class="nombre-pagina">Crear Cuenta</h1>
+<p class="descripcion-pagina">Llena el siguiente formulario para crear una cuenta:</p>
+
+<form class="formulario" method="POST" action="/crear-cuenta"">
+    <div class="campo">
+        <label for="nombre">Nombre:</label>
+        <input 
+            type="text"
+            id="nombre"
+            placeholder="Ingresa tu nombre"
+            name="nombre"
+        />
+    </div>
+
+    <div class="campo">
+        <label for="apellido">Apellido:</label>
+        <input 
+            type="text"
+            id="apellido"
+            placeholder="Ingresa tu apellido"
+            name="apellido"
+        />
+    </div>
+
+    <div class="campo">
+        <label for="telefono">Teléfono:</label>
+        <input 
+            type="tel"
+            id="telefono"
+            placeholder="Ingresa tu teléfono +598 91 111 111"
+            name="telefono"
+        />
+    </div>
+
+    <div class="campo">
+        <label for="email">E-mail:</label>
+        <input 
+            type="email"
+            id="email"
+            placeholder="Ingresa tu E-mail"
+            name="email"
+        />
+    </div>
+
+    <div class="campo">
+        <label for="password">Password:</label>
+        <input 
+            type="password"
+            id="password"
+            placeholder="Registra un Password"
+            name="password"
+        />
+    </div>
+
+    <input type="submit" class="boton" value="Crear Cuenta"/>
+</form>
+
+<div class="acciones">
+    <a href="/">¿Ya tienes una cuenta? Inicia Sesión</a>
+    <a href="/olvide-password">¿Olvidaste tu password?</a>
+</div>
