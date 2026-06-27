@@ -4,7 +4,7 @@ $db = mysqli_connect(
     'localhost',
     'root',
     'root',
-    '' //Nombre pendiente
+    'appsalon_mvc' //Nombre pendiente
     );
 
 

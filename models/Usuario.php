@@ -27,4 +27,44 @@ class Usuario extends ActiveRecord {
         $this->confirmado = $args['confirmado'] ?? null;
         $this->token = $args['token'] ?? '';
     }
+
+    // Mensajes de Validación para la creación de una cuenta
+    public function validarNuevaCuenta() {
+        if (!$this->nombre) {
+            self::$alertas['error'][]= 'El Nombre es obligatorio';
+        }
+        
+        if (!$this->apellido) {
+            self::$alertas['error'][]= 'El Apellido es obligatorio';
+        }
+
+        if (!$this->email) {
+            self::$alertas['error'][]= 'El email es obligatorio';
+        }
+
+        // Password
+        if (!$this->password) {
+            self::$alertas['error'][]= 'El password es obligatorio';
+        }
+        if (strlen($this->password) < 6) { // strlen evalua la longitud del valor, si es menor a 6 cae el mensaje
+            self::$alertas['error'][]= 'El password no puede tener menos de 6 caracteres';
+        }
+
+        return self::$alertas;
+    }
+
+    // Revisa si el ya Usuario existe
+    public function existeUsuario() {
+        $query = "SELECT * FROM " . self::$tabla . " WHERE email = '" . $this->email . "' LIMIT 1";
+
+        //debuguear($query); // útil para verificar que el la consulta no tenga errores.
+        
+        $resultado = self::$db->query($query);
+
+        if ($resultado->num_rows) {
+            self::$alertas['error'][] = 'Este usuario ya está registrado';
+        }
+
+        return $resultado;
+    }
 }
