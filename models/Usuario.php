@@ -1,7 +1,7 @@
 <?php
 namespace Model;
 
-class Usuarios extends ActiveRecord {
+class Usuario extends ActiveRecord {
     // Base de Datos
     protected static $tabla = 'usuarios';
     protected static $columnasDB = ['id','nombre','apellido','email','password','telefono','admin','confirmado','token']; //columnasDB es para normalizar los datos que se mentiene en memoria

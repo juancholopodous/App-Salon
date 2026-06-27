@@ -2,6 +2,7 @@
 <p class="descripcion-pagina">Llena el siguiente formulario para crear una cuenta:</p>
 
 <form class="formulario" method="POST" action="/crear-cuenta"">
+    
     <div class="campo">
         <label for="nombre">Nombre:</label>
         <input 
@@ -9,6 +10,7 @@
             id="nombre"
             placeholder="Ingresa tu nombre"
             name="nombre"
+            value="<?php echo s($usuario->nombre) ?>"
         />
     </div>
 
@@ -19,6 +21,7 @@
             id="apellido"
             placeholder="Ingresa tu apellido"
             name="apellido"
+            value="<?php echo s($usuario->apellido) ?>"
         />
     </div>
 
@@ -29,6 +32,7 @@
             id="telefono"
             placeholder="Ingresa tu teléfono +598 91 111 111"
             name="telefono"
+            value="<?php echo s($usuario->telefono) ?>"
         />
     </div>
 
@@ -39,6 +43,7 @@
             id="email"
             placeholder="Ingresa tu E-mail"
             name="email"
+            value="<?php echo s($usuario->email) ?>"
         />
     </div>
 
