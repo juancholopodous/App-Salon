@@ -9,7 +9,53 @@ use Classes\Email;
 class LoginController {
     
     public static function login(Router $router) {  
-        $router->render('auth/login'); //no definimos aquí extención ni nombre de la carpeta porque estas estan definidas dentro del metodo render.
+        $alertas = [];
+
+        $auth = new Usuario;
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new Usuario($_POST);
+            
+            $alertas = $auth->validarLogin();
+
+            if (empty($alertas)) {
+                // Comprobar que exista el usuario
+                $usuario = Usuario::Where('email', $auth->email);
+
+                if ($usuario) {
+                    // Verificamos el password
+                    if ( $usuario->comprobarPasswordAndVerificado($auth->password) ) {
+                        //Autenticar el usuario
+                        session_start();
+
+                        $_SESSION['id'] = $usuario->id;
+                        $_SESSION['nombre'] = $usuario->nombre . " " . $usuario->apellido;
+                        $_SESSION['email'] = $usuario->email;
+                        $_SESSION['login'] = true;
+
+                        // Redireccionamiento
+                        if ($usuario->admin === "1") {
+                            $_SESSION['admin'] = $usuario->admin ?? null;
+                            header('Location: /admin');
+
+                        } else {
+                            header('Location: /cita');
+                        }
+                    }
+
+                } else {
+                    Usuario::setAlerta('error', 'Usuario no encontrado');
+                }
+                
+            }
+        }
+
+        $alertas = Usuario::getAlertas();
+
+        $router->render('auth/login', [ //no definimos aquí extención ni nombre de la carpeta porque estas estan definidas dentro del metodo render.
+            'alertas' => $alertas,
+            'auth' => $auth
+        ]);
     }
 
     public static function logout() {
@@ -17,8 +63,35 @@ class LoginController {
     }
 
     public static function olvide(Router $router) {
-        $router->render('auth/olvide-password', [
+        $alertas = [];
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new Usuario($_POST);
+            $alertas = $auth->validarEmail();
+
+            //debuguear($auth);
+            if ( empty($alertas) ) {
+                $usuario = Usuario::Where('email', $auth->email);
+
+                if ($usuario && $usuario->confirmado === "1") {
+                    // El usuario existe Y está confirmado (generamos un nuevo token de un solo uso)
+                    $usuario->crearToken();
+                    $usuario->guardar();
+
+                    // To Do: Enviar el mail al usuario...
+                    Usuario::setAlerta('exito', "Revisa tu email");
+
+                }else {
+                    // El usuario NO existe Ó NO está confirmado
+                    Usuario::setAlerta('error', "el usuario no existe ó no esta confirmado aún");
+                }
+            }
+        }
+
+        $alertas = Usuario::getAlertas();
+
+        $router->render('auth/olvide-password', [
+            'alertas' => $alertas
         ]);
     }
 
